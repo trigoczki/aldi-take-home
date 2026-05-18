@@ -31,7 +31,7 @@ public class SensorControllerAdvice {
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<String> handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
+    public ResponseEntity<Void> handleDataIntegrityViolationException() {
+        return ResponseEntity.status(HttpStatus.CONFLICT).build();
     }
 }
