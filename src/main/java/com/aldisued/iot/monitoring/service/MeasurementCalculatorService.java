@@ -3,6 +3,7 @@ package com.aldisued.iot.monitoring.service;
 
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -28,8 +29,24 @@ public class MeasurementCalculatorService {
     }
 
     public List<Double> getMovingAverage(List<Double> data, int windowSize) {
-        // TODO: Task 10
-        return List.of();
+        if (windowSize <= 0) {
+            throw new IllegalArgumentException("Window size must be greater than 0");
+        } else if (windowSize > data.size()) {
+            throw new IllegalArgumentException("Window size must be less than or equal to the size of the data");
+        }
+
+        List<Double> result = new ArrayList<>();
+        for (int i = 0; i <= data.size() - windowSize; i++) {
+            List<Double> subList = data.subList(i, i + windowSize);
+            double average = subList.stream()
+                    .filter(Objects::nonNull)
+                    .mapToDouble(Double::doubleValue)
+                    .average()
+                    .orElse(0.0);
+            result.add(average);
+        }
+
+        return result;
     }
 
 }

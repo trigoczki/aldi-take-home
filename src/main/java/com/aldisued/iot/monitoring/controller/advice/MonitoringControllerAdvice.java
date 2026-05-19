@@ -1,6 +1,6 @@
 package com.aldisued.iot.monitoring.controller.advice;
 
-import com.aldisued.iot.monitoring.controller.SensorController;
+import com.aldisued.iot.monitoring.error.SensorNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import java.util.HashMap;
 import java.util.Map;
 
-@ControllerAdvice(assignableTypes = SensorController.class)
-public class SensorControllerAdvice {
+@ControllerAdvice
+public class MonitoringControllerAdvice {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> handleValidationExceptions(
@@ -33,5 +33,10 @@ public class SensorControllerAdvice {
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<Void> handleDataIntegrityViolationException() {
         return ResponseEntity.status(HttpStatus.CONFLICT).build();
+    }
+
+    @ExceptionHandler(SensorNotFoundException.class)
+    public ResponseEntity<Void> handleSensorNotFound() {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 }
