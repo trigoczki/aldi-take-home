@@ -1,5 +1,6 @@
 package com.aldisued.iot.monitoring.service;
 
+import com.aldisued.iot.monitoring.constants.Topic;
 import com.aldisued.iot.monitoring.dto.AlertDto;
 import com.aldisued.iot.monitoring.entity.Alert;
 import com.aldisued.iot.monitoring.entity.Sensor;
@@ -32,7 +33,7 @@ public class AlertService {
         Alert alert = new Alert(alertDto.message(), alertDto.timestamp(), sensor);
         alert = alertRepository.save(alert);
 
-        kafkaTemplate.send("alerts", alertDto);
+        kafkaTemplate.send(Topic.ALERTS, alertDto);
 
         return alert;
     }
